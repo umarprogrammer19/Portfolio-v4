@@ -1,101 +1,175 @@
-import Image from "next/image";
+"use client"
+
+import type React from "react"
+
+import { Canvas } from "@react-three/fiber"
+import { OrbitControls, Float, Text3D, Center } from "@react-three/drei"
+import { motion } from "framer-motion"
+import { useInView } from "react-intersection-observer"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { FaCode, FaPalette, FaMobileAlt } from "react-icons/fa"
+
+const FloatingText = () => (
+  <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
+    <Center>
+      <Text3D font="/fonts/Poppins_Bold.json" size={1.5} height={0.2} curveSegments={12}>
+        Your Name
+        <meshStandardMaterial color="#FF4136" />
+      </Text3D>
+    </Center>
+  </Float>
+)
+
+const AnimatedSection = ({ children }: { children: React.ReactNode }) => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  })
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+const ServiceCard = ({
+  icon: Icon,
+  title,
+  description,
+}: { icon: React.ElementType; title: string; description: string }) => (
+  <div className="bg-accent p-6 rounded-lg shadow-lg transition-transform hover:scale-105">
+    <Icon className="text-4xl text-secondary mb-4" />
+    <h3 className="text-xl font-semibold mb-2">{title}</h3>
+    <p className="text-gray-300">{description}</p>
+  </div>
+)
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen">
+      <section className="h-screen flex items-center justify-center relative overflow-hidden">
+        <Canvas className="absolute inset-0">
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+          <OrbitControls enableZoom={false} />
+          <FloatingText />
+        </Canvas>
+        <div className="z-10 text-center">
+          <motion.h1
+            className="text-6xl font-bold mb-4 font-poppins"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Your Name
+          </motion.h1>
+          <motion.p
+            className="text-2xl text-gray-300 font-inter"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
           >
-            Read our docs
-          </a>
+            Web Developer & Designer
+          </motion.p>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 1 }}>
+            <Button asChild className="mt-8">
+              <Link href="/contact">Get in Touch</Link>
+            </Button>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      <AnimatedSection>
+        <section className="py-20 bg-gradient-to-b from-black to-accent">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold mb-8 text-center font-poppins">Welcome to My Portfolio</h2>
+            <p className="text-xl text-center max-w-2xl mx-auto font-inter">
+              I'm a passionate web developer and designer with over 5 years of experience in creating stunning,
+              functional websites and applications. My goal is to bring your ideas to life with cutting-edge technology
+              and eye-catching designs.
+            </p>
+          </div>
+        </section>
+      </AnimatedSection>
+
+      <AnimatedSection>
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold mb-12 text-center font-poppins">My Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <ServiceCard
+                icon={FaCode}
+                title="Web Development"
+                description="Custom web applications built with the latest technologies to meet your specific needs."
+              />
+              <ServiceCard
+                icon={FaPalette}
+                title="UI/UX Design"
+                description="Intuitive and visually appealing interfaces that enhance user experience and engagement."
+              />
+              <ServiceCard
+                icon={FaMobileAlt}
+                title="Responsive Design"
+                description="Websites that look and function perfectly on all devices, from mobile to desktop."
+              />
+            </div>
+          </div>
+        </section>
+      </AnimatedSection>
+
+      <AnimatedSection>
+        <section className="py-20 bg-gradient-to-b from-accent to-black">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold mb-8 text-center font-poppins">Featured Projects</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((project) => (
+                <div
+                  key={project}
+                  className="bg-muted rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-105"
+                >
+                  <img
+                    src={`https://picsum.photos/seed/${project}/400/250`}
+                    alt={`Project ${project}`}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-2 font-poppins">Project {project}</h3>
+                    <p className="text-gray-400 font-inter">
+                      A brief description of the project and the technologies used. Click to learn more about the
+                      challenges and solutions.
+                    </p>
+                    <Button variant="ghost" asChild className="mt-4">
+                      <Link href={`/projects#project-${project}`}>View Project</Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </AnimatedSection>
+
+      <AnimatedSection>
+        <section className="py-20">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-4xl font-bold mb-8 font-poppins">Let's Work Together</h2>
+            <p className="text-xl mb-8 font-inter">
+              Ready to start your next project? I'm here to help you bring your vision to life.
+            </p>
+            <Button asChild size="lg">
+              <Link href="/contact">Contact Me</Link>
+            </Button>
+          </div>
+        </section>
+      </AnimatedSection>
     </div>
-  );
+  )
 }
+
