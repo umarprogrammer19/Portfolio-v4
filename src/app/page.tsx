@@ -9,6 +9,7 @@ import { useInView } from "react-intersection-observer"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { FaCode, FaPalette, FaMobileAlt } from "react-icons/fa"
+import { ComponentType } from "react"
 
 const FloatingText = () => (
   <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
@@ -43,7 +44,7 @@ const ServiceCard = ({
   icon: Icon,
   title,
   description,
-}: { icon: React.ElementType; title: string; description: string }) => (
+}: { icon: ComponentType<{ className: string }>; title: string; description: string }) => (
   <div className="bg-accent p-6 rounded-lg shadow-lg transition-transform hover:scale-105">
     <Icon className="text-4xl text-secondary mb-4" />
     <h3 className="text-xl font-semibold mb-2">{title}</h3>
