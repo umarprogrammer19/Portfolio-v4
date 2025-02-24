@@ -1,101 +1,247 @@
-import Image from "next/image";
+"use client"
+
+import { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { ArrowRight, ChevronDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Counter } from "@/components/counter"
+import { SkillBar } from "@/components/skill-bar"
+import { TestimonialCard } from "@/components/testimonial-card"
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  })
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Hero Section */}
+      <motion.section className="min-h-screen relative flex items-center" style={{ opacity, scale }}>
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center space-y-8"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <h1 className="text-5xl md:text-7xl font-bold gradient-text">Creative Developer & Designer</h1>
+            <p className="text-xl md:text-2xl text-gray-400">
+              Building digital experiences that make a difference. Specialized in web development, UI/UX design, and
+              creative solutions.
+            </p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex gap-6 justify-center"
+            >
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-sky-400 to-blue-600 hover:from-sky-500 hover:to-blue-700"
+                asChild
+              >
+                <Link href="/projects" className="flex items-center">
+                  View Projects
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-sky-400 text-sky-400 hover:bg-sky-400/10" asChild>
+                <Link href="/contact">Contact Me</Link>
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <ChevronDown className="h-8 w-8 text-sky-400" />
+        </motion.div>
+      </motion.section>
+
+      {/* Stats Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="text-center"
+              >
+                <Counter from={0} to={stat.value} className="text-4xl md:text-5xl font-bold gradient-text" />
+                <p className="text-gray-400 mt-2">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-3xl md:text-5xl font-bold text-center mb-16 gradient-text"
+          >
+            Skills & Expertise
+          </motion.h2>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {skills.map((skill, index) => (
+              <motion.div
+                key={skill.name}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <SkillBar name={skill.name} percentage={skill.percentage} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects Preview */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-3xl md:text-5xl font-bold text-center mb-16 gradient-text"
+          >
+            Featured Projects
+          </motion.h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {featuredProjects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                whileHover={{ y: -10 }}
+                transition={{ duration: 0.5 }}
+                className="group relative aspect-video rounded-xl overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                <img
+                  src={project.image || "/placeholder.svg"}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <h3 className="text-2xl font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-400">{project.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button size="lg" variant="outline" className="border-sky-400 text-sky-400 hover:bg-sky-400/10" asChild>
+              <Link href="/projects">View All Projects</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-3xl md:text-5xl font-bold text-center mb-16 gradient-text"
+          >
+            Client Testimonials
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard key={index} {...testimonial} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="relative rounded-2xl overflow-hidden backdrop-blur-sm bg-sky-900/20 border border-sky-400/20 p-12 max-w-4xl mx-auto">
+            <div className="absolute inset-0 bg-gradient-to-r from-sky-400/10 to-blue-600/10" />
+            <div className="relative text-center space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-white">Ready to Start Your Project?</h2>
+              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                Let's work together to create something amazing. Get in touch and let's discuss your ideas.
+              </p>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-sky-400 to-blue-600 hover:from-sky-500 hover:to-blue-700"
+                asChild
+              >
+                <Link href="/contact">Get in Touch</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  );
+  )
 }
+
+const stats = [
+  { value: 50, label: "Projects Completed" },
+  { value: 25, label: "Happy Clients" },
+  { value: 5, label: "Years Experience" },
+  { value: 100, label: "Coffee Cups" },
+]
+
+const skills = [
+  { name: "Web Development", percentage: 90 },
+  { name: "UI/UX Design", percentage: 85 },
+  { name: "React/Next.js", percentage: 95 },
+  { name: "TypeScript", percentage: 88 },
+  { name: "Node.js", percentage: 82 },
+  { name: "Database Design", percentage: 85 },
+]
+
+const featuredProjects = [
+  {
+    title: "E-commerce Platform",
+    description: "A modern e-commerce solution with seamless user experience",
+    image: "/placeholder.svg?height=400&width=600",
+  },
+  {
+    title: "Portfolio Website",
+    description: "Creative portfolio website with stunning animations",
+    image: "/placeholder.svg?height=400&width=600",
+  },
+]
+
+const testimonials = [
+  {
+    content: "Exceptional work! The attention to detail and creative solutions provided exceeded our expectations.",
+    author: "Sarah Johnson",
+    role: "CEO, TechStart",
+  },
+  {
+    content:
+      "A true professional who delivers outstanding results. The website has significantly improved our online presence.",
+    author: "Mike Thompson",
+    role: "Marketing Director",
+  },
+  {
+    content: "Incredible experience working together. The final product was exactly what we envisioned and more.",
+    author: "Emily Davis",
+    role: "Product Manager",
+  },
+]
+
