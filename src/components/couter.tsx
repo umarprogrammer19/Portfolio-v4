@@ -7,7 +7,7 @@ interface CounterProps {
     from: number
     to: number
     className?: string
-}
+} 
 
 export function Counter({ from, to, className }: CounterProps) {
     const [count, setCount] = useState(from)
